@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{padding:0;margin:0;list-style:none;}
+		body{overflow:hidden;background:#000;}
+		ul{width:133px;height:200px;margin:100px auto;position:relative;-webkit-transform:rotateX(-15deg);transform-style:preserve-3d;perspective:800px;}
+		li{width:100%;height:100%;position:absolute;left:0;top:0;border-radius:10px;box-shadow:0 0 10px #fff;-webkit-box-reflect:below 10px -webkit-linear-gradient(rgba(0,0,0,0) 40%,rgba(0,0,0,0.6));}
+	</style>
+	<script>
+		window.onload=function(){
+			var oUl=document.querySelector('ul');
+			var n=11;
+			for(var i=0;i<n;i++){
+				var oLi=document.createElement('li');
+				oLi.style.background='url(img2/'+(i+1)+'.jpg)';
+				oLi.style.transition='1s all ease '+(n-i)*200+'ms';
+				;(function(i,oLi){
+					setTimeout(function(){
+						oLi.style.transform='rotateY('+(360/n*i)+'deg) translateZ(300px)';
+					},0)
+				})(i,oLi)
+				oUl.appendChild(oLi);
+			}
+			var x=0;
+			var y=0;
+			var iSpeedX=0;
+			var iSpeedY=0;
+			var lastX=0;
+			var lastY=0;
+			var timer=null;
+			var aLi=document.querySelectorAll('li');
+			var bIn=false;
+			aLi[0].addEventListener('transitionend',function(){
+				bIn=true;
+				change(x,y);
+			},false)
+			document.onmousedown=function(ev){
+				if(bIn==false)return;
+				clearInterval(timer);
+				var oEvent=ev || event;
+				disX=oEvent.clientX-y;
+				disY=oEvent.clientY-x;
+				document.onmousemove=function(ev){
+					var oEvent=ev || event;
+					 x=oEvent.clientY-disY;
+					 y=oEvent.clientX-disX;
+					change(x/3,y/3);
+					iSpeedX=oEvent.clientX-lastX;
+					iSpeedY=oEvent.clientY-lastY;
+					lastX=oEvent.clientX;
+					lastY=oEvent.clientY;
+				};
+				document.onmouseup=function(){
+					document.onmousemove=document.onmouseup=null;
+					timer=setInterval(function(){
+                        x+=iSpeedY;
+                        y+=iSpeedX;
+
+                        iSpeedX*=0.9;
+                        iSpeedY*=0.9;
+
+                        change(x/3, y/3);
+                    }, 30);
+				};
+				return false;
+			};
+			function change(x,y){	
+				for(var i=0;i<aLi.length;i++){
+					aLi[i].style.transition='none';
+					aLi[i].style.transform='rotateX('+(-x)+'deg) rotateY('+(360/n*i+y)+'deg) translateZ(300px)';
+					var scale=Math.abs(Math.abs(((360/n*i)+y)%360)-180)/180;
+					if(scale<0.3)scale=0.3;
+					aLi[i].style.opacity=scale;
+				}
+			}
+		};
+	</script>
+</head>
+<body>
+	<ul>
+	</ul>
+</body>
+</html>

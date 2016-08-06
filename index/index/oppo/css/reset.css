@@ -1,0 +1,10 @@
+/* reset */
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,dl,dd{margin:0;padding:0;line-height:100%;}
+img{border:none 0; vertical-align:top;}
+li{ list-style:none;}
+a{text-decoration:none;}
+i,em{font-style:normal;}
+b,strong{font-weight:normal;}
+.clearfix{zoom:1}
+.clearfix:after{content:"";display:block;clear:both;}
+.wrap a:hover{color:#00925f;}

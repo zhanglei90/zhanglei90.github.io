@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		ul,li,p{padding:0;margin:0;}
+		li{list-style:none;}
+		#box{width:400px;height:300px;position:relative;margin:0 auto; overflow:hidden; }
+		ul{height:400px;position:relative;}
+		li{width:400px;height:300px;position:absolute;left:400px;top:0;}
+		.lit{left:0;}
+		li img{width:400px;height:300px;}
+		#cont{width:160px;position:absolute;left:120px;bottom:10px;overflow:hidden;}
+		#cont p{width:20px;height:20px;background:#fff;float:left;margin:10px;text-align:center;cursor:pointer;}
+		#cont .on{background:green;}
+		a{background:#fff;position:absolute;text-align:center;line-height:40px;text-decoration:none;display:none;}
+		a:hover{background:green;color:#fff;}
+		#l{width:50px;height:40px;left:10px;top:50%;}
+		#r{width:50px;height:40px;right:10px;top:50%;}
+	</style>
+	<script src="move(option).js"></script>
+	<script>
+		window.onload=function(){
+			var oBox=document.getElementById('box');
+			var oUl=oBox.children[0];
+			var aLi1=oUl.children;
+			var oL=document.getElementById('l');
+			var oR=document.getElementById('r');
+			var oCont=document.getElementById('cont');
+			var aLi2=oCont.children;
+			var iNum=0;
+			function prev(){
+				startMove(aLi1[iNum],{left:400});
+				iNum--;
+				if(iNum<0){
+					iNum=aLi1.length-1;
+				}
+				aLi1[iNum].style.left=-400+'px';
+				startMove(aLi1[iNum],{left:0});
+				tab(iNum)
+			}
+			function next(){
+				startMove(aLi1[iNum],{left:-400});
+				iNum++;
+				if(iNum>=aLi1.length){
+					iNum=0;
+				}
+				aLi1[iNum].style.left=400+'px';
+				startMove(aLi1[iNum],{left:0});
+				tab(iNum)
+
+			}
+			oL.onclick=function(){
+				prev()
+			}
+			oR.onclick=function(){
+				next();
+			}
+			oBox.onmouseover=function(){
+				oL.style.display='block';
+				oR.style.display='block';
+			};
+			oBox.onmouseout=function(){
+				oL.style.display='none';
+				oR.style.display='none';
+			};
+			function tab(index){
+				for(var i=0;i<aLi2.length;i++){
+					aLi2[i].className='';
+				}
+				aLi2[index].className='on';
+			}
+			for(var i=0;i<aLi2.length;i++){
+				(function(index){
+					aLi2[i].onclick=function(){
+						if(index>iNum){
+							startMove(aLi1[iNum],{left:-400});
+							aLi1[index].style.left=400+'px';
+							startMove(aLi1[index],{left:0});
+							tab(index);
+						}else{
+							startMove(aLi1[iNum],{left:400});
+							aLi1[index].style.left=-400+'px';
+							startMove(aLi1[index],{left:0});
+							tab(index);
+						}
+						iNum=index;
+					};
+				})(i)
+			}
+
+		};
+	</script>
+</head>
+<body>
+	<div id="box">
+		<ul id="coom">
+			<li class="lit"><img src="img/1.jpg"></li>
+			<li><img src="img/2.jpg"></li>
+			<li><img src="img/3.jpg"></li>
+			<li><img src="img/4.jpg"></li>
+		</ul>
+		<div id="cont">
+			<p class="on">1</p>
+			<p>2</p>
+			<p>3</p>
+			<p>4</p>
+		</div>
+		<a id="l" href="javascript:;">左</a>
+		<a id="r" href="javascript:;">右</a>
+	</div>
+</body>
+</html>
